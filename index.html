@@ -88,7 +88,7 @@ to{filter: drop-shadow(0 0 20px hotpink);}
 <!-- PAGE 1 -->
 <div id="page1" class="page">
 <h1>🌷 Misu's Flower Shop™ 🌷</h1>
-<p>Would you like to send flowers to Maitha?</p>
+<p>Would you like to send flowers to your beautiful girlfriend?</p>
 
 <button class="bigYes" onclick="show(2); startMusic()">YES</button>
 <button class="tinyNo" onclick="wrong()">no</button>
@@ -187,7 +187,13 @@ Thank you for shopping at<br>
 <p style="margin-top:20px;">
 ⭐ “flowers arrived to a very happy maitha”
 </p>
+
+<p style="margin-top:20px; font-size:14px;">
+ps: the music took so long to add pls be proud mwah 💖
+</p>
+
 </div>
+  
 
 <script>
 
@@ -201,8 +207,13 @@ let loc="";
 let card="";
 
 function show(n){
+function show(n){
 document.querySelectorAll('.page').forEach(p=>p.style.display='none');
 document.getElementById('page'+n).style.display='block';
+
+if(n === 7){
+confettiRain();
+}
 }
 
 function wrong(){
@@ -318,6 +329,25 @@ spawn("🌸");
 spawn("🌷");
 spawn("💐");
 },300);
+}
+
+function confettiRain(){
+let emojis = ["🎉","💖","🌸","💐","✨"];
+
+setInterval(()=>{
+let c = document.createElement("div");
+c.innerText = emojis[Math.floor(Math.random()*emojis.length)];
+c.style.position = "fixed";
+c.style.left = Math.random()*100 + "vw";
+c.style.top = "-10px";
+c.style.fontSize = "24px";
+c.style.animation = "fall 2.5s linear forwards";
+c.style.pointerEvents = "none";
+
+document.body.appendChild(c);
+
+setTimeout(()=>c.remove(),2500);
+},150);
 }
 
 </script>
