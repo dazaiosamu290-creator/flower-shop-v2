@@ -191,10 +191,8 @@ Thank you for shopping at<br>
 <p style="margin-top:20px; font-size:14px;">
 PS: the music took so long to add pls be proud mwah 💖
 </p>
-
 </div>
   
-
 <script>
 
 function startMusic(){
@@ -331,10 +329,12 @@ spawn("💐");
 },300);
 }
 
+let rainInterval;
+
 function confettiRain(){
 let emojis = ["🎉","💖","🌸","💐","✨"];
 
-setInterval(()=>{
+rainInterval = setInterval(()=>{
 let c = document.createElement("div");
 c.innerText = emojis[Math.floor(Math.random()*emojis.length)];
 c.style.position = "fixed";
@@ -346,14 +346,12 @@ c.style.pointerEvents = "none";
 
 document.body.appendChild(c);
 
-setTimeout(()=>{
-show(7);
-confettiRain();
-},1000);
+setTimeout(()=>c.remove(),2500);
+},150);
+}
 
 function stopConfettiRain(){
-let el = document.querySelectorAll('[style*="top: -10px"]');
-el.forEach(e=>e.remove());
+clearInterval(rainInterval);
 }
 
 </script>
