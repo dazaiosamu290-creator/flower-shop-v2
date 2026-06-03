@@ -212,6 +212,7 @@ document.getElementById('page'+n).style.display='block';
 
 if(n === 7){
 confettiRain();
+setTimeout(()=>stopConfettiRain(), 5000);
 }
 }
 
@@ -345,8 +346,14 @@ c.style.pointerEvents = "none";
 
 document.body.appendChild(c);
 
-setTimeout(()=>c.remove(),2500);
-},150);
+setTimeout(()=>{
+show(7);
+confettiRain();
+},1000);
+
+function stopConfettiRain(){
+let el = document.querySelectorAll('[style*="top: -10px"]');
+el.forEach(e=>e.remove());
 }
 
 </script>
