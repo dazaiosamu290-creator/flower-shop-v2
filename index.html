@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Misu's Flower Shop™ 🌷</title>
+
+<style>
+body{
+font-family:Arial;
+background:#fff0f8;
+text-align:center;
+padding:30px;
+overflow-x:hidden;
+}
+
+.page{display:none;max-width:800px;margin:auto;}
+#page1{display:block;}
+
+button{
+padding:12px 18px;
+margin:8px;
+border:none;
+border-radius:12px;
+cursor:pointer;
+font-size:16px;
+}
+
+.bigYes{font-size:42px;padding:30px 80px;background:#ffb6d9;}
+.tinyNo{font-size:10px;padding:4px 8px;}
+
+.box{
+background:white;
+padding:15px;
+margin-top:15px;
+border-radius:12px;
+}
+
+#bouquet{
+font-size:45px;
+min-height:70px;
+transition:0.3s;
+filter: drop-shadow(0 0 5px pink);
+}
+
+.floating{
+position:fixed;
+font-size:28px;
+animation: fall 2s linear forwards;
+pointer-events:none;
+}
+
+@keyframes fall{
+0%{transform:translateY(-50px);opacity:1;}
+100%{transform:translateY(600px);opacity:0;}
+}
+
+.confetti{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+pointer-events:none;
+font-size:22px;
+animation: fade 2s forwards;
+}
+
+@keyframes fade{
+0%{opacity:1;}
+100%{opacity:0;}
+}
+
+.glow{
+animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow{
+from{filter: drop-shadow(0 0 5px pink);}
+to{filter: drop-shadow(0 0 20px hotpink);}
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div id="page1" class="page">
+<h1>🌷 Misu's Flower Shop™ 🌷</h1>
+<p>Would you like to send flowers to Maitha?</p>
+
+<button class="bigYes" onclick="show(2)">YES</button>
+<button class="tinyNo" onclick="wrong()">no</button>
+</div>
+
+<!-- PAGE 2 -->
+<div id="page2" class="page">
+<h1>Choose Bouquet</h1>
+
+<button onclick="choose('Pink Lilies — 220 AED')">🌸 Pink Lilies</button>
+<button onclick="choose('Purple Tulips — 220 AED')">💜 Tulips</button>
+<button onclick="valentine()">🌹 Valentine Roses</button>
+<button onclick="choose('Mix Bouquet — 399 AED')">💐 Mix</button>
+
+<br><br>
+<button onclick="show(3)">✨ Custom Bouquet ✨</button>
+</div>
+
+<!-- CUSTOM -->
+<div id="page3" class="page">
+<h1>Build Bouquet 🌷</h1>
+<p>Misu System: build emotional damage carefully</p>
+
+<div class="box">
+<button onclick="add('🌷',50)">🌷</button>
+<button onclick="add('🌸',55)">🌸</button>
+<button onclick="add('🌹',70)">🌹</button>
+<button onclick="add('💜',60)">💜</button>
+<button onclick="add('🌺',65)">🌺</button>
+</div>
+
+<div class="box">
+<div id="bouquet">💐</div>
+<p id="total">Total: 0 AED</p>
+</div>
+
+<button onclick="finish()">Continue</button>
+</div>
+
+<!-- LOCATION -->
+<div id="page4" class="page">
+<h1>Delivery Location</h1>
+<input id="loc" placeholder="Enter anything..." />
+<br>
+<button onclick="nextCard()">Continue</button>
+</div>
+
+<!-- CARD -->
+<div id="page5" class="page">
+<h1>Write Card 💌</h1>
+<textarea id="card" style="height:140px;width:80%"></textarea>
+<br>
+<button onclick="pay()">Continue</button>
+</div>
+
+<!-- PROCESS -->
+<div id="page6" class="page">
+<h1>Processing Order...</h1>
+<p id="proc">🌷 System: starting chaos...</p>
+</div>
+
+<!-- CONFIRM -->
+<div id="page7" class="page">
+<h1>🎉 Order Confirmed 🎉</h1>
+
+<div class="box" id="summary"></div>
+
+<button onclick="deliver()">Continue</button>
+</div>
+
+<!-- DELIVERY -->
+<div id="page8" class="page">
+<h1>🚚 Driver Updates</h1>
+<p id="driver">Driver: leaving shop...</p>
+</div>
+
+<!-- CLAIMED -->
+<div id="page9" class="page">
+<h1>Recipient Claimed Flowers ❤️</h1>
+<p>🌷 Delivered<br>💌 Card delivered<br>✍️ Signed: Maitha</p>
+
+<button onclick="final()">Continue</button>
+</div>
+
+<!-- FINAL -->
+<div id="page10" class="page">
+<h1 class="glow">🌷 DELIVERY COMPLETE 🌷</h1>
+
+<p>
+Thank you for shopping at<br>
+<b>Misu's Flower Shop™ 🌷</b>
+</p>
+
+<p id="secret"></p>
+
+<p style="margin-top:20px;">
+⭐ “flowers arrived to a very happy maitha”
+</p>
+</div>
+
+<script>
+
+let bouquet=[];
+let total=0;
+let chosen="";
+let loc="";
+let card="";
+
+function show(n){
+document.querySelectorAll('.page').forEach(p=>p.style.display='none');
+document.getElementById('page'+n).style.display='block';
+}
+
+function wrong(){
+alert("❌ wrong answer");
+show(1);
+spawn("🌸");
+}
+
+function valentine(){
+alert("Misu System: nah 😭 choose again");
+}
+
+function choose(name){
+chosen=name;
+spawn("💐");
+show(4);
+}
+
+function add(f,p){
+bouquet.push(f);
+total+=p;
+
+document.getElementById("bouquet").innerText=bouquet.join(" ");
+document.getElementById("total").innerText="Total: "+total+" AED";
+
+spawn(f);
+confetti();
+}
+
+function finish(){
+chosen="Custom Bouquet";
+show(4);
+}
+
+function nextCard(){
+loc=document.getElementById("loc").value;
+show(5);
+}
+
+function pay(){
+card=document.getElementById("card").value;
+show(6);
+
+let msgs=[
+"🌷 System: arranging petals...",
+"🚚 System: bribing driver...",
+"📦 System: packing emotions...",
+"💌 System: writing dramatic card..."
+];
+
+let i=0;
+let t=setInterval(()=>{
+document.getElementById("proc").innerText=msgs[i];
+i++;
+if(i>=msgs.length){
+clearInterval(t);
+setTimeout(()=>show(7),1000);
+}
+},1200);
+}
+
+function deliver(){
+show(8);
+
+let msgs=[
+"Driver: on the way 🚚",
+"Driver: saw cat 🐱",
+"Driver: emotionally recovering",
+"Driver: almost there"
+];
+
+let i=0;
+let t=setInterval(()=>{
+document.getElementById("driver").innerText=msgs[i];
+i++;
+if(i>=msgs.length){
+clearInterval(t);
+setTimeout(()=>show(9),1200);
+}
+},1500);
+}
+
+function final(){
+show(10);
+fall();
+
+if(total > 300){
+document.getElementById("secret").innerText =
+"💖 SECRET: You built an expensive love bouquet. Misu is proud.";
+}
+}
+
+function spawn(e){
+let d=document.createElement("div");
+d.className="floating";
+d.innerText=e;
+d.style.left=Math.random()*window.innerWidth+"px";
+document.body.appendChild(d);
+setTimeout(()=>d.remove(),2000);
+}
+
+function confetti(){
+let c=document.createElement("div");
+c.className="confetti";
+c.innerText="🎉🌸💐💜🎉🌷";
+document.body.appendChild(c);
+setTimeout(()=>c.remove(),2000);
+}
+
+function fall(){
+setInterval(()=>{
+spawn("🌸");
+spawn("🌷");
+spawn("💐");
+},300);
+}
+
+</script>
+
+</body>
+</html>
